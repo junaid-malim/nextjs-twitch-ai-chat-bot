@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenAI } from '@google/genai';
+import { db } from '@/lib/db';
 
 export async function POST(request: Request) {
   try {
-    const { author, text, context, emotes, revealAi } = await request.json();
+    const { author, text, context, emotes, revealAi, sessionId } = await request.json();
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
@@ -55,7 +56,26 @@ Write a short, casual reply to the chat (max 1 or 2 sentences). Don't use hashta
       reply = `🤖 [AI Bot]: ${reply}`;
     }
 
-    return NextResponse.json({ reply });
+    const usage = response.usageMetadata ? {
+      promptTokens: response.usageMetadata.promptTokenCount || 0,
+      completionTokens: response.usageMetadata.candidatesTokenCount || 0,
+      totalTokens: response.usageMetadata.totalTokenCount || 0
+    } : null;
+
+    if (usage && sessionId) {
+      try {
+        db.insert({
+          sessionId,
+          promptTokens: usage.promptTokens,
+          completionTokens: usage.completionTokens,
+          totalTokens: usage.totalTokens
+        });
+      } catch (dbError) {
+        console.error("Failed to log usage to DB:", dbError);
+      }
+    }
+
+    return NextResponse.json({ reply, usage });
   } catch (error: any) {
     console.error('AI Error:', error);
     const isRateLimit = error?.status === 429 || (error?.message && error.message.includes('429'));

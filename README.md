@@ -13,6 +13,15 @@ An AI-powered Twitch Chat integration built with Next.js, Google Gemini API (`@g
 
 ---
 
+## 🚀 Release Notes (Latest Enhancements)
+- **Crimson Command Aesthetic**: Overhauled the UI design to a dark, brutalist "Mission Control" theme featuring pure black backgrounds, glowing red accents, and high-density industrial styling.
+- **Fully Responsive Layout**: Removed width constraints; the dashboard now expands edge-to-edge dynamically (`w-full h-full`) across any monitor size.
+- **Inline Error Handling**: Replaced intrusive browser alerts with smooth, inline chat UI error messages when the Gemini API hits a quota limit (429) or disconnects.
+- **Token Analytics Chart**: Integrated `recharts` to render a visual graph in the Token Usage popup, tracking prompt and response LLM consumption per session.
+- **Optimized UI Density**: Removed unnecessary padding, gaps, and margins between dashboard modules to create a monolithic, flush control panel.
+
+---
+
 ## 🛠️ Setup & Installation Guide
 
 ### System Requirements
