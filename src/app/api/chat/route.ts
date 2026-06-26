@@ -30,7 +30,7 @@ ${context.length > 0 ? `Recent context:\n${context.join('\n')}\n\n` : ''}New inp
 Write a short, casual reply to the chat (max 1 or 2 sentences). Don't use hashtags if possible. ${identityInstruction}`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-flash-latest',
+      model: 'gemini-2.5-flash',
       contents: prompt,
     });
 
